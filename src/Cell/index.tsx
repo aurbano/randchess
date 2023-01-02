@@ -1,4 +1,5 @@
 import { Coordinates, Piece } from "../App";
+import { HEIGHT } from "../constants";
 
 export type CellData = {
   index: number;
@@ -30,16 +31,31 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
   };
 
   return <div
+    className={(index % 8 + Math.floor(index / 8)) % 2 !== 0 ? 'clear' : undefined}
     style={{
       position: 'relative',
-      display: 'inline-block', width: '50px', height: '50px', outline: 'solid 1px #ccc',
-      background: selected ? 'green' : highlight ? 'blue' : 'transparent',
-      overflow: 'hidden', margin: 0, padding: 0
+      display: 'inline-block',
+      width: HEIGHT,
+      height: HEIGHT,
+      lineHeight: `${HEIGHT}px`,
+      outline: 'solid 1px #999',
+      background: selected ? 'green' : highlight ? 'blue' : undefined,
+      overflow: 'hidden',
+      margin: 0, padding: 0,
+      cursor: piece ? 'pointer' : undefined,
     }}
     onMouseOver={onCellHover}
     onMouseDown={onCellClick}
   >
-    <span style={{position: 'absolute', top: '-5px', left: '2px', fontSize: '0.7em', display: 'block'}}>{index}</span>
-    {piece && ('p')}
+    <span style={{
+      position: 'absolute',
+      top: '-1.5em',
+      left: '0.4em',
+      fontSize: '0.7em',
+      display: 'block',
+      color: '#666',
+    }}>{index}</span>
+    
+    {piece && (<span className='piece'>X</span>)}
   </div>
 };

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import './App.css'
 import { Cell, CellData, CellProps } from './Cell';
+import { HEIGHT } from './constants';
+
+import './App.css'
 
 export type Coordinates = {
   x: number;
@@ -94,7 +96,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App" style={{width: 8*50}}>
+    <div className="App" style={{width: 8 * HEIGHT, lineHeight: 0}}>
       {cells.map((cell, index) => (
         <Cell {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
       ))}
