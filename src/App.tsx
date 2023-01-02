@@ -19,6 +19,11 @@ function App() {
   const [selectedCell, setSelectedCell] = useState<number>(-1);
 
   const onCellHover = (coordinates: Coordinates[]) => {
+    // if we have a cell selected, avoid changing highlights
+    if (selectedCell > -1) {
+      return;
+    }
+
     // convert coordinates to cell indexes
     const indexes = coordinates.filter(
       coordinate => coordinate.x >= 0 && coordinate.x <= 8 &&
@@ -43,6 +48,12 @@ function App() {
   };
 
   const onCellClick = (index: number) => {
+    if (index === selectedCell) {
+      onCellHover([]);
+      setSelectedCell(-1);
+      return;
+    }
+
     if (selectedCell > -1 && cells[selectedCell].piece) {
       const validMoves = cells[selectedCell].piece?.move({
         x: selectedCell % 8,
@@ -62,6 +73,7 @@ function App() {
       setSelectedCell(-1);
       return;
     }
+    
     setSelectedCell(index);
   };
 

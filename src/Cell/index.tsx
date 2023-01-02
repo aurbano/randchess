@@ -54,6 +54,7 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
       fontSize: '0.7em',
       display: 'block',
       color: '#666',
+      pointerEvents: 'none',
     }}>{index}</span>
     
     {piece && (<span className='piece'>{piece.label}</span>)}

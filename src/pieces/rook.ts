@@ -5,7 +5,7 @@ export const rook: Piece = {
   move: (location: Coordinates) => {
     const ret = [];
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 7; i++) {
       ret.push({x: location.x + i, y: location.y + 0});
       ret.push({x: location.x - i, y: location.y + 0});
       
