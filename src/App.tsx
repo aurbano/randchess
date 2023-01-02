@@ -113,7 +113,7 @@ function App() {
   return (
     <div className="App" style={{width: 8 * HEIGHT, lineHeight: 0}}>
       {cells.map((cell, index) => (
-        <Cell {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
+        <Cell key={`${cell.piece?.label}-${index}`} {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
       ))}
     </div>
   )
