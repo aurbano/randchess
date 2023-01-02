@@ -39,10 +39,10 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
       height: HEIGHT,
       lineHeight: `${HEIGHT}px`,
       outline: 'solid 1px #999',
-      background: selected ? 'green' : highlight ? 'blue' : undefined,
+      background: highlight ? 'blue' : undefined,
       overflow: 'hidden',
       margin: 0, padding: 0,
-      cursor: piece ? 'pointer' : undefined,
+      cursor: piece || highlight ? 'pointer' : undefined,
     }}
     onMouseOver={onCellHover}
     onMouseDown={onCellClick}
@@ -57,6 +57,10 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
       pointerEvents: 'none',
     }}>{index}</span>
     
-    {piece && (<span className='piece'>{piece.label}</span>)}
+    {piece && (
+      <span className='piece' style={{background: selected ? 'green' : undefined}}>
+        {piece.label}
+      </span>
+    )}
   </div>
 };

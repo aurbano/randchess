@@ -61,6 +61,9 @@ function App() {
       }).map(coordinates => coordinates.x + coordinates.y * 8) || [];
 
       if (!validMoves.includes(index)) {
+        if (cells[index].piece) {
+          setSelectedCell(index);
+        }
         return;
       }
       
@@ -77,13 +80,11 @@ function App() {
     setSelectedCell(index);
   };
 
-  const [cells, setCells] = useState<CellData[]>(
-    Array(8*8).fill(0).map((_, index) => ({index, highlight: false, piece: null}))
-  );
+  const [cells, setCells] = useState<CellData[]>([]);
 
   useEffect(() => {
     // init the board
-    const newCells = [...cells];
+    const newCells: CellData[] = Array(8*8).fill(0).map((_, index) => ({index, highlight: false, piece: null}));
 
     newCells[48].piece = pawn;
     newCells[49].piece = pawn;
