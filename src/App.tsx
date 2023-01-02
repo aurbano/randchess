@@ -3,6 +3,7 @@ import { Cell, CellData, CellProps } from './Cell';
 import { HEIGHT } from './constants';
 
 import './App.css'
+import { bishop, king, knight, pawn, queen, rook } from './pieces';
 
 export type Coordinates = {
   x: number;
@@ -10,38 +11,21 @@ export type Coordinates = {
 };
 
 export type Piece = {
+  label: string;
   move: (location: Coordinates) => Coordinates[];
 };
-
-const pawn: Piece = {
-  move: (location: Coordinates) => {
-    return [
-      {x: location.x, y: location.y + 1},
-    ];
-  },
-}
-
-const knight: Piece = {
-  move: (location: Coordinates) => {
-    return [
-      {x: location.x + 2, y: location.y + 1},
-      {x: location.x + 2, y: location.y - 1},
-      {x: location.x - 2, y: location.y + 1},
-      {x: location.x - 2, y: location.y - 1},
-      {x: location.x + 1, y: location.y + 2},
-      {x: location.x + 1, y: location.y - 2},
-      {x: location.x - 1, y: location.y + 2},
-      {x: location.x - 1, y: location.y - 2},
-    ];
-  },
-}
 
 function App() {
   const [selectedCell, setSelectedCell] = useState<number>(-1);
 
   const onCellHover = (coordinates: Coordinates[]) => {
     // convert coordinates to cell indexes
-    const indexes = coordinates.map((coordinate) => coordinate.x + coordinate.y * 8);
+    const indexes = coordinates.filter(
+      coordinate => coordinate.x >= 0 && coordinate.x <= 8 &&
+                    coordinate.y >= 0 && coordinate.y <= 8
+    ).map(
+      (coordinate) => coordinate.x + coordinate.y * 8
+    );
 
     const newCells = cells.map(cell => ({
       ...cell,
@@ -89,8 +73,26 @@ function App() {
     // init the board
     const newCells = [...cells];
 
-    newCells[7].piece = pawn;
-    newCells[11].piece = knight;
+    newCells[48].piece = pawn;
+    newCells[49].piece = pawn;
+    newCells[50].piece = pawn;
+    newCells[51].piece = pawn;
+    newCells[52].piece = pawn;
+    newCells[53].piece = pawn;
+    newCells[54].piece = pawn;
+    newCells[55].piece = pawn;
+
+    newCells[57].piece = knight;
+    newCells[62].piece = knight;
+
+    newCells[58].piece = bishop;
+    newCells[61].piece = bishop;
+    
+    newCells[56].piece = rook;
+    newCells[63].piece = rook;
+
+    newCells[59].piece = queen;
+    newCells[60].piece = king;
 
     setCells(newCells);
   }, []);

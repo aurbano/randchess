@@ -56,6 +56,6 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
       color: '#666',
     }}>{index}</span>
     
-    {piece && (<span className='piece'>X</span>)}
+    {piece && (<span className='piece'>{piece.label}</span>)}
   </div>
 };
