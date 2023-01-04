@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useState } from "react";
 import { Coordinates, HEIGHT, CellData } from "../../constants";
 import { idx2coord } from "../../util/idx2coord";
 
@@ -10,6 +11,8 @@ export type CellProps = CellData & {
 };
 
 export const Cell = ({index, highlight, piece, onHover, selected, onClick}: CellProps) => {
+  const [showLabels, setShowLabels] = useState(false);
+  
   const onCellHover = () => {
     if (!piece) {
       onHover([]);
@@ -37,7 +40,9 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
     onMouseOver={onCellHover}
     onMouseDown={onCellClick}
   >
-    <span className='label'>{index}</span>
+    {showLabels && (
+      <span className='label'>{index}</span>
+    )}
     
     {piece && (
       <span className={classNames('piece', {black: piece.identity === -1, selected})}>
