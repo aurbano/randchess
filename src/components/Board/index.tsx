@@ -11,8 +11,10 @@ import classNames from 'classnames';
 
 const Board = () => {
   const [cells, setCells] = useState<CellData[]>([]);
+  const [highlightedCells, setHighlightedCells] = useState<number[]>([]);
+  const [dangerCells, setDangerCells] = useState<number[]>([]);
   const [selectedCell, setSelectedCell] = useState<number>(-1);
-  const [turn, setTurn] = useState(1);
+  const [turn, setTurn] = useState(0);
 
   const updateHighlights = (index: number) => {
     const { piece } = cells[index];
@@ -24,19 +26,7 @@ const Board = () => {
                     coordinate.y >= 0 && coordinate.y <= 7
     ).map(coord2idx);
 
-    const newCells = cells.map(cell => ({
-      ...cell,
-      highlight: false,
-    }));
-    
-    for (let i = 0; i < indexes.length; i++) {
-      if (!newCells[indexes[i]]) {
-        continue;
-      }
-      newCells[indexes[i]].highlight = true;
-    }
-
-    setCells(newCells);
+    setHighlightedCells(indexes);
   }
 
   const selectPiece = (index: number) => {
@@ -97,7 +87,32 @@ const Board = () => {
 
   useEffect(() => {
     setCells(getStandardPieces());
+    setTurn(1);
   }, []);
+  
+  useEffect(() => {
+    // update which cells are in danger when the turn changes
+    const newDangerCells: number[] = [];
+
+    // cells in danger are cells that can be taken by the enemy
+    cells.forEach((cell, index) => {
+      const { piece } = cell;
+      if (!piece) {
+        return;
+      }
+      const validMoves = piece.move(idx2coord(cell.index), cells) || [];
+
+      validMoves.forEach(move => {
+        const moveCell = cells[coord2idx(move)];
+
+        if (moveCell?.piece && moveCell?.piece.identity !== piece.identity) {
+          newDangerCells.push(moveCell.index);
+        }
+      });
+    });
+
+    setDangerCells(newDangerCells);
+  }, [turn]);
 
   return (
     <div className='game-area'>
@@ -111,6 +126,8 @@ const Board = () => {
             <Cell
               key={`${cell.piece?.label}-${index}`}
               {...cell}
+              highlight={highlightedCells.includes(index)}
+              danger={dangerCells.includes(index)}
               selected={index === selectedCell}
               onHover={() => onCellHover(index)}
               onClick={() => onCellClick(index)}

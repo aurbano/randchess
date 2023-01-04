@@ -14,7 +14,6 @@ export type Piece = {
 
 export type CellData = {
   index: number;
-  highlight: boolean;
   piece: Piece | null;
   selected?: boolean;
 };
