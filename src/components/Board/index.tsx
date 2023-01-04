@@ -98,10 +98,10 @@ const Board = () => {
         </div>
 
         <div className="board" style={{width: 8 * HEIGHT, lineHeight: 0}}>
-        {cells.map((cell, index) => (
-          <Cell key={`${cell.piece?.label}-${index}`} {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
-        ))}
-      </div>
+          {cells.map((cell, index) => (
+            <Cell key={`${cell.piece?.label}-${index}`} {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
+          ))}
+        </div>
     </div>
   )
 }
