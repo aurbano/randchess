@@ -1,3 +1,6 @@
+$turnIndicatorWidth: 25px;
+$turnIndicatorBorder: 5px;
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,6 +8,39 @@
   text-align: center;
 }
 
-.board {
-  box-shadow: 0 0 2em rgba(0, 0, 0, 0.6);
+.game-area {
+  position: relative;
+
+  .turn-indicator {
+    position: absolute;
+    top: 40%;
+    right: -$turnIndicatorWidth * 3;
+    border: solid 1px #999;
+    border-radius: $turnIndicatorWidth + $turnIndicatorBorder;
+    padding: 2px;
+
+    .black, .white {
+      width: $turnIndicatorWidth - $turnIndicatorBorder;
+      height: $turnIndicatorWidth - $turnIndicatorBorder;
+      border-radius: 50%;
+      border: solid $turnIndicatorBorder transparent;
+
+      &.current {
+        border-color: rgb(0, 123, 255);
+      }
+    }
+
+    .black {
+      background: black;
+      margin-bottom: 1em;
+    }
+
+    .white {
+      background: white;
+    }
+  }
+
+  .board {
+    box-shadow: 0 0 2em rgba(0, 0, 0, 0.6);
+  }
 }
