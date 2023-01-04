@@ -5,6 +5,8 @@ import { Coordinates, HEIGHT, CellData } from '../../constants';
 import { getStandardPieces } from './util/getStandardPieces';
 
 import './index.scss'
+import { idx2coord } from '../../util/idx2coord';
+import { coord2idx } from '../../util/coord2idx';
 
 const Board = () => {
   const [selectedCell, setSelectedCell] = useState<number>(-1);
@@ -19,9 +21,7 @@ const Board = () => {
     const indexes = coordinates.filter(
       coordinate => coordinate.x >= 0 && coordinate.x <= 7 &&
                     coordinate.y >= 0 && coordinate.y <= 7
-    ).map(
-      (coordinate) => coordinate.x + coordinate.y * 8
-    );
+    ).map(coord2idx);
 
     const newCells = cells.map(cell => ({
       ...cell,
@@ -51,10 +51,9 @@ const Board = () => {
         return;
       }
 
-      const validMoves = cells[selectedCell].piece?.move({
-        x: selectedCell % 8,
-        y: Math.floor(selectedCell / 8)
-      }).map(coordinates => coordinates.x + coordinates.y * 8) || [];
+      const selectedCoords = idx2coord(selectedCell);
+
+      const validMoves = cells[selectedCell].piece?.move(selectedCoords).map(coord2idx) || [];
 
       if (!validMoves.includes(index)) {
         if (cells[index].piece) {

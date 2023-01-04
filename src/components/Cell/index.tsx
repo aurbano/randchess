@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { Coordinates, Piece, HEIGHT, CellData } from "../../constants";
+import { Coordinates, HEIGHT, CellData } from "../../constants";
+import { idx2coord } from "../../util/idx2coord";
 
 import './index.scss';
 
@@ -15,17 +16,16 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
       return;
     }
 
-    const x = index % 8;
-    const y = Math.floor(index / 8);
-
-    onHover(piece.move({x, y}));
+    const coords = idx2coord(index);
+    onHover(piece.move(coords));
   };
 
   const onCellClick = () => {
     onClick();
   };
 
-  const isOddCell = (index % 8 + Math.floor(index / 8)) % 2 !== 0;
+  const coords = idx2coord(index);
+  const isOddCell = (coords.x + coords.y) % 2 !== 0;
 
   return <div
     className={classNames('cell', {clear: isOddCell, highlight, selectable: piece || highlight})}
