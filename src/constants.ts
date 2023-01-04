@@ -9,7 +9,7 @@ export type Piece = {
   label: string;
   identity: -1 | 1;
   canJump?: boolean;
-  move: (location: Coordinates) => Coordinates[];
+  move: (location: Coordinates, board: CellData[]) => Coordinates[];
 };
 
 export type CellData = {

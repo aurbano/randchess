@@ -10,16 +10,15 @@ import { coord2idx } from '../../util/coord2idx';
 import classNames from 'classnames';
 
 const Board = () => {
+  const [cells, setCells] = useState<CellData[]>([]);
   const [selectedCell, setSelectedCell] = useState<number>(-1);
   const [turn, setTurn] = useState(1);
 
-  const onCellHover = (coordinates: Coordinates[]) => {
-    // if we have a cell selected, avoid changing highlights
-    if (selectedCell > -1) {
-      return;
-    }
+  const updateHighlights = (index: number) => {
+    const { piece } = cells[index];
 
-    // convert coordinates to cell indexes
+    const coordinates = piece ? piece.move(idx2coord(index), cells) : [];
+
     const indexes = coordinates.filter(
       coordinate => coordinate.x >= 0 && coordinate.x <= 7 &&
                     coordinate.y >= 0 && coordinate.y <= 7
@@ -38,29 +37,41 @@ const Board = () => {
     }
 
     setCells(newCells);
+  }
+
+  const selectPiece = (index: number) => {
+    setSelectedCell(index);
+    updateHighlights(index);
+  };
+
+  const onCellHover = (index: number) => {
+    // if we have a cell selected, avoid changing highlights
+    if (selectedCell > -1) {
+      return;
+    }
+
+    updateHighlights(index);
   };
 
   const onCellClick = (index: number) => {
     if (index === selectedCell) {
-      onCellHover([]);
+      // deselect cell
+      updateHighlights(-1)
       setSelectedCell(-1);
       return;
     }
 
     if (selectedCell > -1 && cells[selectedCell].piece) {
-      if (cells[index].piece && cells[index].piece?.identity === cells[selectedCell].piece?.identity) {
-        // you can't take your own piece
+      if (cells[index].piece && cells[index].piece?.identity === turn) {
+        // if its your own piece, switch selection
+        selectPiece(index);
         return;
       }
 
       const selectedCoords = idx2coord(selectedCell);
-      const validMoves = cells[selectedCell].piece?.move(selectedCoords).map(coord2idx) || [];
+      const validMoves = cells[selectedCell].piece?.move(selectedCoords, cells).map(coord2idx) || [];
 
       if (!validMoves.includes(index)) {
-        if (cells[index].piece && cells[index].piece?.identity === turn) {
-          // change selection to this other piece
-          setSelectedCell(index);
-        }
         return;
       }
       
@@ -81,10 +92,8 @@ const Board = () => {
       return;
     }
     
-    setSelectedCell(index);
+    selectPiece(index);
   };
-
-  const [cells, setCells] = useState<CellData[]>([]);
 
   useEffect(() => {
     setCells(getStandardPieces());
@@ -99,7 +108,13 @@ const Board = () => {
 
         <div className="board" style={{width: 8 * HEIGHT, lineHeight: 0}}>
           {cells.map((cell, index) => (
-            <Cell key={`${cell.piece?.label}-${index}`} {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
+            <Cell
+              key={`${cell.piece?.label}-${index}`}
+              {...cell}
+              selected={index === selectedCell}
+              onHover={() => onCellHover(index)}
+              onClick={() => onCellClick(index)}
+            />
           ))}
         </div>
     </div>

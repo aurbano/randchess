@@ -6,7 +6,7 @@ import { idx2coord } from "../../util/idx2coord";
 import './index.scss';
 
 export type CellProps = CellData & {
-  onHover: (coordinates: Coordinates[]) => void;
+  onHover: () => void;
   onClick: () => void;
 };
 
@@ -15,12 +15,12 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
   
   const onCellHover = () => {
     if (!piece) {
-      onHover([]);
+      onHover();
       return;
     }
 
     const coords = idx2coord(index);
-    onHover(piece.move(coords));
+    onHover();
   };
 
   const onCellClick = () => {
