@@ -1,4 +1,4 @@
-import { CellData } from "../Cell";
+import { CellData } from "../../../constants";
 import { pawn, knight, bishop, rook, queen, king } from "../pieces";
 
 export const getStandardPieces = () => {

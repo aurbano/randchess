@@ -1,23 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { Cell, CellData } from './Cell';
-import { HEIGHT } from './constants';
+import { Cell } from '../Cell';
+import { Coordinates, HEIGHT, CellData } from '../../constants';
 import { getStandardPieces } from './util/getStandardPieces';
 
-import './App.scss'
+import './index.scss'
 
-export type Coordinates = {
-  x: number;
-  y: number;
-};
-
-export type Piece = {
-  label: string;
-  identity: -1 | 1;
-  move: (location: Coordinates) => Coordinates[];
-};
-
-function App() {
+const Board = () => {
   const [selectedCell, setSelectedCell] = useState<number>(-1);
 
   const onCellHover = (coordinates: Coordinates[]) => {
@@ -97,4 +86,4 @@ function App() {
   )
 }
 
-export default App
+export default Board

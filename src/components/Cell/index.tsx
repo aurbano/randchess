@@ -1,15 +1,7 @@
 import classNames from "classnames";
-import { Coordinates, Piece } from "../App";
-import { HEIGHT } from "../constants";
+import { Coordinates, Piece, HEIGHT, CellData } from "../../constants";
 
-import './cell.scss';
-
-export type CellData = {
-  index: number;
-  highlight: boolean;
-  piece: Piece | null;
-  selected?: boolean;
-};
+import './index.scss';
 
 export type CellProps = CellData & {
   onHover: (coordinates: Coordinates[]) => void;

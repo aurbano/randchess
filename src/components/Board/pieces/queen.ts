@@ -1,4 +1,4 @@
-import { Coordinates, Piece } from "../App";
+import { Coordinates, Piece } from "../../../constants";
 
 export const queen = (identity: -1 | 1): Piece => ({
   identity,
