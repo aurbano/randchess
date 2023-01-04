@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Cell, CellData, CellProps } from './Cell';
-import { HEIGHT } from './constants';
 
-import './App.css'
-import { bishop, king, knight, pawn, queen, rook } from './pieces';
+import { Cell, CellData } from './Cell';
+import { HEIGHT } from './constants';
+import { getStandardPieces } from './util/getStandardPieces';
+
+import './App.scss'
 
 export type Coordinates = {
   x: number;
@@ -12,6 +13,7 @@ export type Coordinates = {
 
 export type Piece = {
   label: string;
+  identity: -1 | 1;
   move: (location: Coordinates) => Coordinates[];
 };
 
@@ -83,35 +85,11 @@ function App() {
   const [cells, setCells] = useState<CellData[]>([]);
 
   useEffect(() => {
-    // init the board
-    const newCells: CellData[] = Array(8*8).fill(0).map((_, index) => ({index, highlight: false, piece: null}));
-
-    newCells[48].piece = pawn;
-    newCells[49].piece = pawn;
-    newCells[50].piece = pawn;
-    newCells[51].piece = pawn;
-    newCells[52].piece = pawn;
-    newCells[53].piece = pawn;
-    newCells[54].piece = pawn;
-    newCells[55].piece = pawn;
-
-    newCells[57].piece = knight;
-    newCells[62].piece = knight;
-
-    newCells[58].piece = bishop;
-    newCells[61].piece = bishop;
-    
-    newCells[56].piece = rook;
-    newCells[63].piece = rook;
-
-    newCells[59].piece = queen;
-    newCells[60].piece = king;
-
-    setCells(newCells);
+    setCells(getStandardPieces());
   }, []);
 
   return (
-    <div className="App" style={{width: 8 * HEIGHT, lineHeight: 0}}>
+    <div className="board" style={{width: 8 * HEIGHT, lineHeight: 0}}>
       {cells.map((cell, index) => (
         <Cell key={`${cell.piece?.label}-${index}`} {...cell} selected={index === selectedCell} onHover={onCellHover} onClick={() => onCellClick(index)} />
       ))}

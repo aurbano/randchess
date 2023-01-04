@@ -1,6 +1,7 @@
 import { Coordinates, Piece } from "../App";
 
-export const queen: Piece = {
+export const queen = (identity: -1 | 1): Piece => ({
+  identity,
   label: 'Q',
   move: (location: Coordinates) => {
     const ret = [];
@@ -18,4 +19,4 @@ export const queen: Piece = {
     
     return ret;
   },
-}
+})

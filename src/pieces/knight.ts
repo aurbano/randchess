@@ -1,6 +1,7 @@
 import { Coordinates, Piece } from "../App";
 
-export const knight: Piece = {
+export const knight = (identity: -1 | 1): Piece => ({
+  identity,
   label: 'K',
   move: (location: Coordinates) => {
     return [
@@ -14,4 +15,4 @@ export const knight: Piece = {
       {x: location.x - 1, y: location.y - 2},
     ];
   },
-}
+})

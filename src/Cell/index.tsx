@@ -1,5 +1,8 @@
+import classNames from "classnames";
 import { Coordinates, Piece } from "../App";
 import { HEIGHT } from "../constants";
+
+import './cell.scss';
 
 export type CellData = {
   index: number;
@@ -30,35 +33,22 @@ export const Cell = ({index, highlight, piece, onHover, selected, onClick}: Cell
     onClick();
   };
 
+  const isOddCell = (index % 8 + Math.floor(index / 8)) % 2 !== 0;
+
   return <div
-    className={(index % 8 + Math.floor(index / 8)) % 2 !== 0 ? 'clear' : undefined}
+    className={classNames('cell', {clear: isOddCell, highlight, selectable: piece || highlight})}
     style={{
-      position: 'relative',
-      display: 'inline-block',
       width: HEIGHT,
       height: HEIGHT,
       lineHeight: `${HEIGHT}px`,
-      outline: 'solid 1px #999',
-      background: highlight ? 'blue' : undefined,
-      overflow: 'hidden',
-      margin: 0, padding: 0,
-      cursor: piece || highlight ? 'pointer' : undefined,
     }}
     onMouseOver={onCellHover}
     onMouseDown={onCellClick}
   >
-    <span style={{
-      position: 'absolute',
-      top: '-1.5em',
-      left: '0.4em',
-      fontSize: '0.7em',
-      display: 'block',
-      color: '#666',
-      pointerEvents: 'none',
-    }}>{index}</span>
+    <span className='label'>{index}</span>
     
     {piece && (
-      <span className='piece' style={{background: selected ? 'green' : undefined}}>
+      <span className={classNames('piece', {black: piece.identity === -1, selected})}>
         {piece.label}
       </span>
     )}

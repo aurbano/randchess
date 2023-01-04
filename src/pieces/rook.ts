@@ -1,6 +1,7 @@
 import { Coordinates, Piece } from "../App";
 
-export const rook: Piece = {
+export const rook = (identity: -1 | 1): Piece => ({
+  identity,
   label: 'R',
   move: (location: Coordinates) => {
     const ret = [];
@@ -15,4 +16,4 @@ export const rook: Piece = {
     
     return ret;
   },
-}
+});

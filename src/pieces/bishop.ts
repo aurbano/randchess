@@ -1,6 +1,7 @@
 import { Coordinates, Piece } from "../App";
 
-export const bishop: Piece = {
+export const bishop = (identity: -1 | 1): Piece => ({
+  identity,
   label: 'B',
   move: (location: Coordinates) => {
     const ret = [];
@@ -14,4 +15,4 @@ export const bishop: Piece = {
 
     return ret;
   },
-}
+})
