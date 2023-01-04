@@ -3,7 +3,7 @@ import { Coordinates, Piece } from "../../../constants";
 export const rook = (identity: -1 | 1): Piece => ({
   identity,
   label: 'R',
-  move: (location: Coordinates) => {
+  move: (location, board) => {
     const ret = [];
 
     for (let i = 1; i <= 7; i++) {

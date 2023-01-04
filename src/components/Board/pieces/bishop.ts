@@ -3,7 +3,7 @@ import { Coordinates, Piece } from "../../../constants";
 export const bishop = (identity: -1 | 1): Piece => ({
   identity,
   label: 'B',
-  move: (location: Coordinates) => {
+  move: (location, board) => {
     const ret = [];
 
     for (let i = 1; i <= 8; i++) {
