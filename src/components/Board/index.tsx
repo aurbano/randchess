@@ -17,8 +17,8 @@ const Board = () => {
 
     // convert coordinates to cell indexes
     const indexes = coordinates.filter(
-      coordinate => coordinate.x >= 0 && coordinate.x <= 8 &&
-                    coordinate.y >= 0 && coordinate.y <= 8
+      coordinate => coordinate.x >= 0 && coordinate.x <= 7 &&
+                    coordinate.y >= 0 && coordinate.y <= 7
     ).map(
       (coordinate) => coordinate.x + coordinate.y * 8
     );
@@ -46,6 +46,11 @@ const Board = () => {
     }
 
     if (selectedCell > -1 && cells[selectedCell].piece) {
+      if (cells[index].piece && cells[index].piece?.identity === cells[selectedCell].piece?.identity) {
+        // you can't take your own piece
+        return;
+      }
+
       const validMoves = cells[selectedCell].piece?.move({
         x: selectedCell % 8,
         y: Math.floor(selectedCell / 8)

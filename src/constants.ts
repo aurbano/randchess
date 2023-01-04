@@ -8,6 +8,7 @@ export type Coordinates = {
 export type Piece = {
   label: string;
   identity: -1 | 1;
+  canJump?: boolean;
   move: (location: Coordinates) => Coordinates[];
 };
 
