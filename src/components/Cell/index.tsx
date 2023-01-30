@@ -39,7 +39,7 @@ export const Cell = ({index, highlight, danger, piece, onHover, selected, onClic
       height: HEIGHT,
       lineHeight: `${HEIGHT}px`,
     }}
-    onMouseOver={onCellHover}
+    onMouseEnter={onCellHover}
     onMouseDown={onCellClick}
   >
     {showLabels && (

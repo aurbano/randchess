@@ -6,7 +6,7 @@ export const bishop = (identity: -1 | 1): Piece => ({
   move: (location, board) => {
     const ret = [];
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= board.length; i++) {
       ret.push({x: location.x + i, y: location.y + i});
       ret.push({x: location.x - i, y: location.y + i});
       ret.push({x: location.x + i, y: location.y - i});

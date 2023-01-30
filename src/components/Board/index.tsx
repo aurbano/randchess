@@ -17,9 +17,42 @@ const Board = () => {
   const [turn, setTurn] = useState(0);
 
   const updateHighlights = (index: number) => {
-    const { piece } = cells[index];
+    const piece = cells[index]?.piece;
 
-    const coordinates = piece ? piece.move(idx2coord(index), cells) : [];
+    if (!piece) {
+      setHighlightedCells([]);
+      return;
+    }
+
+    let coordinates = piece ? piece.move(idx2coord(index), cells) : [];
+
+    if (!piece.canJump) {
+      const currentCoordinates = idx2coord(index);
+
+      // filter out coordinates that are behind any other piece
+      coordinates = coordinates.filter(coordinate => {
+        const xDir = Math.sign(coordinate.x - currentCoordinates.x);
+        const yDir = Math.sign(coordinate.y - currentCoordinates.y);
+
+        let x = currentCoordinates.x;
+        let y = currentCoordinates.y;
+
+        while (x !== coordinate.x || y !== coordinate.y) {
+          x += xDir;
+          y += yDir;
+
+          if (cells[coord2idx({x, y})]?.piece?.label) {
+            return false;
+          }
+        }
+
+        if (cells[coord2idx({x, y})]?.piece?.label) {
+          return false;
+        }
+
+        return true;
+      });
+    }
 
     const indexes = coordinates.filter(
       coordinate => coordinate.x >= 0 && coordinate.x <= 7 &&
@@ -58,10 +91,7 @@ const Board = () => {
         return;
       }
 
-      const selectedCoords = idx2coord(selectedCell);
-      const validMoves = cells[selectedCell].piece?.move(selectedCoords, cells).map(coord2idx) || [];
-
-      if (!validMoves.includes(index)) {
+      if (!highlightedCells.includes(index)) {
         return;
       }
       
@@ -90,29 +120,29 @@ const Board = () => {
     setTurn(1);
   }, []);
   
-  useEffect(() => {
-    // update which cells are in danger when the turn changes
-    const newDangerCells: number[] = [];
+  // useEffect(() => {
+  //   // update which cells are in danger when the turn changes
+  //   const newDangerCells: number[] = [];
 
-    // cells in danger are cells that can be taken by the enemy
-    cells.forEach((cell, index) => {
-      const { piece } = cell;
-      if (!piece) {
-        return;
-      }
-      const validMoves = piece.move(idx2coord(cell.index), cells) || [];
+  //   // cells in danger are cells that can be taken by the enemy
+  //   cells.forEach((cell, index) => {
+  //     const { piece } = cell;
+  //     if (!piece) {
+  //       return;
+  //     }
+  //     const validMoves = piece.move(idx2coord(cell.index), cells) || [];
 
-      validMoves.forEach(move => {
-        const moveCell = cells[coord2idx(move)];
+  //     validMoves.forEach(move => {
+  //       const moveCell = cells[coord2idx(move)];
 
-        if (moveCell?.piece && moveCell?.piece.identity !== piece.identity) {
-          newDangerCells.push(moveCell.index);
-        }
-      });
-    });
+  //       if (moveCell?.piece && moveCell?.piece.identity !== piece.identity) {
+  //         newDangerCells.push(moveCell.index);
+  //       }
+  //     });
+  //   });
 
-    setDangerCells(newDangerCells);
-  }, [turn]);
+  //   setDangerCells(newDangerCells);
+  // }, [turn]);
 
   return (
     <div className='game-area'>
