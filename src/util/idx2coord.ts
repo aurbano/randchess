@@ -1,4 +1,4 @@
-import { Coordinates } from "../constants";
+import { Coordinates } from '../constants';
 
 export const idx2coord = (idx: number): Coordinates => {
   return {

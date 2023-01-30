@@ -1,13 +1,16 @@
+/* eslint-disable fp/no-mutation */
+import { Box } from '@chakra-ui/react';
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
+import { HEIGHT, CellData } from '../../constants';
+import { coord2idx } from '../../util/coord2idx';
+import { idx2coord } from '../../util/idx2coord';
 import { Cell } from '../Cell';
-import { Coordinates, HEIGHT, CellData } from '../../constants';
+
 import { getStandardPieces } from './util/getStandardPieces';
 
-import './index.scss'
-import { idx2coord } from '../../util/idx2coord';
-import { coord2idx } from '../../util/coord2idx';
-import classNames from 'classnames';
+import './index.scss';
 
 const Board = () => {
   const [cells, setCells] = useState<CellData[]>([]);
@@ -29,7 +32,7 @@ const Board = () => {
       const currentCoordinates = idx2coord(index);
 
       // filter out coordinates that are behind any other piece
-      coordinates = coordinates.filter(coordinate => {
+      coordinates = coordinates.filter((coordinate) => {
         const xDir = Math.sign(coordinate.x - currentCoordinates.x);
         const yDir = Math.sign(coordinate.y - currentCoordinates.y);
 
@@ -40,12 +43,12 @@ const Board = () => {
           x += xDir;
           y += yDir;
 
-          if (cells[coord2idx({x, y})]?.piece?.label) {
+          if (cells[coord2idx({ x, y })]?.piece?.label) {
             return false;
           }
         }
 
-        if (cells[coord2idx({x, y})]?.piece?.label) {
+        if (cells[coord2idx({ x, y })]?.piece?.label) {
           return false;
         }
 
@@ -53,13 +56,15 @@ const Board = () => {
       });
     }
 
-    const indexes = coordinates.filter(
-      coordinate => coordinate.x >= 0 && coordinate.x <= 7 &&
-                    coordinate.y >= 0 && coordinate.y <= 7
-    ).map(coord2idx);
+    const indexes = coordinates
+      .filter(
+        (coordinate) =>
+          coordinate.x >= 0 && coordinate.x <= 7 && coordinate.y >= 0 && coordinate.y <= 7,
+      )
+      .map(coord2idx);
 
     setHighlightedCells(indexes);
-  }
+  };
 
   const selectPiece = (index: number) => {
     setSelectedCell(index);
@@ -78,7 +83,7 @@ const Board = () => {
   const onCellClick = (index: number) => {
     if (index === selectedCell) {
       // deselect cell
-      updateHighlights(-1)
+      updateHighlights(-1);
       setSelectedCell(-1);
       return;
     }
@@ -93,7 +98,7 @@ const Board = () => {
       if (!highlightedCells.includes(index)) {
         return;
       }
-      
+
       // Move your piece
       const newCells = [...cells];
 
@@ -110,7 +115,7 @@ const Board = () => {
       // not your piece
       return;
     }
-    
+
     selectPiece(index);
   };
 
@@ -120,26 +125,27 @@ const Board = () => {
   }, []);
 
   return (
-    <div className='game-area'>
-        <div className='turn-indicator'>
-          <div className={classNames('black', {current: turn === -1})}></div>
-          <div className={classNames('white', {current: turn === 1})}></div>
-        </div>
+    <Box className="game-area">
+      <Box className="turn-indicator">
+        <Box className={classNames('black', { current: turn === -1 })} />
+        <Box className={classNames('white', { current: turn === 1 })} />
+      </Box>
 
-        <div className="board" style={{width: 8 * HEIGHT, lineHeight: 0}}>
-          {cells.map((cell, index) => (
-            <Cell
-              key={`${cell.piece?.label}-${index}`}
-              {...cell}
-              highlight={highlightedCells.includes(index)}
-              selected={index === selectedCell}
-              onHover={() => onCellHover(index)}
-              onClick={() => onCellClick(index)}
-            />
-          ))}
-        </div>
-    </div>
-  )
-}
+      <Box className="board" w={8 * HEIGHT} lineHeight={0}>
+        {cells.map((cell, index) => (
+          <Cell
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${cell.piece?.label || ''}-${index}`}
+            {...cell}
+            highlight={highlightedCells.includes(index)}
+            selected={index === selectedCell}
+            onHover={() => onCellHover(index)}
+            onClick={() => onCellClick(index)}
+          />
+        ))}
+      </Box>
+    </Box>
+  );
+};
 
-export default Board
+export default Board;

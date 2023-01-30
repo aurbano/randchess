@@ -1,8 +1,11 @@
-import { CellData } from "../../../constants";
-import { pawn, knight, bishop, rook, queen, king } from "../pieces";
+/* eslint-disable fp/no-mutation */
+import { CellData } from '../../../constants';
+import { pawn, knight, bishop, rook, queen, king } from '../pieces';
 
 export const getStandardPieces = () => {
-  const board: CellData[] = Array(8*8).fill(0).map((_, index) => ({index, highlight: false, piece: null}));
+  const board: CellData[] = Array(8 * 8)
+    .fill(0)
+    .map((_, index) => ({ index, highlight: false, piece: null }));
 
   // black pieces
   board[8].piece = pawn(-1);
@@ -41,7 +44,7 @@ export const getStandardPieces = () => {
 
   board[58].piece = bishop(1);
   board[61].piece = bishop(1);
-  
+
   board[56].piece = rook(1);
   board[63].piece = rook(1);
 

@@ -1,4 +1,9 @@
 {
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"],
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": "file:///Users/alex/dev/games/randchess/.github/workflows/deploy.yaml"
   }
