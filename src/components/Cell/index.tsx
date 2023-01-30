@@ -7,12 +7,11 @@ import './index.scss';
 
 export type CellProps = CellData & {
   highlight: boolean;
-  danger: boolean;
   onHover: () => void;
   onClick: () => void;
 };
 
-export const Cell = ({index, highlight, danger, piece, onHover, selected, onClick}: CellProps) => {
+export const Cell = ({index, highlight, piece, onHover, selected, onClick}: CellProps) => {
   const [showLabels, setShowLabels] = useState(false);
   
   const onCellHover = () => {
@@ -33,7 +32,7 @@ export const Cell = ({index, highlight, danger, piece, onHover, selected, onClic
   const isOddCell = (coords.x + coords.y) % 2 !== 0;
 
   return <div
-    className={classNames('cell', {clear: isOddCell, highlight, danger, selectable: piece || highlight})}
+    className={classNames('cell', {clear: isOddCell, highlight, selectable: piece || highlight})}
     style={{
       width: HEIGHT,
       height: HEIGHT,
