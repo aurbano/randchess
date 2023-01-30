@@ -64,7 +64,7 @@ const Editor = ({ board }: EditorProps) => {
         {pieces.map((piece) => (
           <Button
             key={piece.label}
-            colorScheme={piece.label === selectedPiece?.label ? 'blue' : undefined}
+            colorScheme={piece.label === selectedPiece?.label ? 'primary' : undefined}
             mb={2}
             mr={2}
             onClick={() => setSelectedPiece(piece)}
