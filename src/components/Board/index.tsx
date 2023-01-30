@@ -1,5 +1,5 @@
 /* eslint-disable fp/no-mutation */
-import { Box } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +7,7 @@ import { HEIGHT, CellData } from '../../constants';
 import { coord2idx } from '../../util/coord2idx';
 import { idx2coord } from '../../util/idx2coord';
 import { Cell } from '../Cell';
+import Editor from '../Editor';
 
 import { getStandardPieces } from './util/getStandardPieces';
 
@@ -125,26 +126,37 @@ const Board = () => {
   }, []);
 
   return (
-    <Box className="game-area">
-      <Box className="turn-indicator">
-        <Box className={classNames('black', { current: turn === -1 })} />
-        <Box className={classNames('white', { current: turn === 1 })} />
+    <>
+      <Box textAlign="center" my={20}>
+        <Container className="game-area">
+          <Box className="turn-indicator">
+            <Box className={classNames('black', { current: turn === -1 })} />
+            <Box className={classNames('white', { current: turn === 1 })} />
+          </Box>
+
+          <Box
+            className="board"
+            w={8 * HEIGHT}
+            lineHeight={0}
+            onMouseLeave={() => setHighlightedCells([])}
+          >
+            {cells.map((cell, index) => (
+              <Cell
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${cell.piece?.label || ''}-${index}`}
+                {...cell}
+                highlight={highlightedCells.includes(index)}
+                selected={index === selectedCell}
+                onHover={() => onCellHover(index)}
+                onClick={() => onCellClick(index)}
+              />
+            ))}
+          </Box>
+        </Container>
       </Box>
 
-      <Box className="board" w={8 * HEIGHT} lineHeight={0}>
-        {cells.map((cell, index) => (
-          <Cell
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${cell.piece?.label || ''}-${index}`}
-            {...cell}
-            highlight={highlightedCells.includes(index)}
-            selected={index === selectedCell}
-            onHover={() => onCellHover(index)}
-            onClick={() => onCellClick(index)}
-          />
-        ))}
-      </Box>
-    </Box>
+      <Editor board={cells} />
+    </>
   );
 };
 
