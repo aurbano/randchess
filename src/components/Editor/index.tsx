@@ -54,7 +54,6 @@ const Editor = ({ board }: EditorProps) => {
       borderTopColor="gray.700"
       px={3}
       py={4}
-      color="gray.300"
     >
       <Container maxW="container.lg">
         <Heading size="sm" mb={4}>
