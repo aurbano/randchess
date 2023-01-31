@@ -1,21 +1,25 @@
 /* eslint-disable react/forbid-dom-props */
+import { useToken } from '@chakra-ui/react';
 import './index.css';
 
 const Github = () => {
+  const [fill, foreground] = useToken('colors', ['gray.900', 'blue.200']);
+
   return (
     <>
       <a
         href="https://github.com/aurbano/randchess"
         className="github-corner"
         aria-label="View source on GitHub"
+        title="View source on GitHub"
       >
         <svg
           width="80"
           height="80"
           viewBox="0 0 250 250"
           style={{
-            fill: '#151513',
-            color: '#fff',
+            fill,
+            color: foreground,
             position: 'absolute',
             top: ' 0',
             border: ' 0',
